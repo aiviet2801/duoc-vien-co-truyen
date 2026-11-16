@@ -1,13 +1,13 @@
 {
-  "background_color": "#ffffff",
-  "description": "Trò chơi quản lý vườn thuốc Nam, bào chế cổ phương và tra cứu Bản Thảo Kinh.",
-  "dir": "ltr",
-  "display": "standalone",
   "name": "Dược Viên Cổ Truyền",
-  "orientation": "any",
-  "scope": "/",
   "short_name": "Dược Viên",
-  "start_url": "/",
+  "description": "Trò chơi quản lý vườn thuốc Nam, bào chế cổ phương và tra cứu Bản Thảo Kinh.",
+  "start_url": "/duoc-vien-co-truyen/",
+  "scope": "/duoc-vien-co-truyen/",
+  "id": "/duoc-vien-co-truyen/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
   "theme_color": "#4A3325",
-  "id": "duoc-vien-co-truyen"
+  "dir": "ltr"
 }
