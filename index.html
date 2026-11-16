@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="vi" class="h-full">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#4A3325">
   <meta name="format-detection" content="telephone=no">
   <title>Dược Viên Cổ Truyền - Quản Lý & Bào Chế Nam Dược</title>
+  <meta name="description" content="Trò chơi quản lý vườn thuốc Nam, bào chế cổ phương và tra cứu Bản Thảo Kinh.">
+  <meta property="og:title" content="Dược Viên Cổ Truyền - Quản Lý & Bào Chế Nam Dược">
+  <meta property="og:description" content="Trò chơi quản lý vườn thuốc Nam, bào chế cổ phương và tra cứu Bản Thảo Kinh.">
+  <meta property="og:type" content="website">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -56,13 +60,24 @@
       touch-action: manipulation;
     }
 
-    html, body {
-      overscroll-behavior-y: contain;
-      overflow-x: hidden;
+    html {
+      height: auto;
+      min-height: 100%;
       width: 100%;
+      overflow-x: clip;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
     }
 
     body {
+      height: auto;
+      min-height: 100vh;
+      min-height: 100dvh;
+      width: 100%;
+      overflow-x: clip;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       background-color: #F5F0E6;
       background-image: 
         radial-gradient(#E5DAC6 1px, transparent 1px),
@@ -154,13 +169,13 @@
     }
   </style>
 </head>
-<body class="font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-ngoc-bich selection:text-white relative">
+<body class="font-sans antialiased min-h-screen overflow-y-auto flex flex-col selection:bg-ngoc-bich selection:text-white relative">
 
   <!-- CANVAS HIỆU ỨNG HẠT TOÀN MÀN HÌNH -->
   <canvas id="fx-canvas" class="fixed inset-0 pointer-events-none z-40"></canvas>
 
   <!-- ==================== HEADER (TỐI ƯU MOBILE RESPONSIVE) ==================== -->
-  <header class="bg-go-tram text-giay-do border-b-2 sm:border-b-4 border-dong-co shadow-md relative z-20 pt-safe">
+  <header class="bg-go-tram text-giay-do border-b-2 sm:border-b-4 border-dong-co shadow-md relative z-20 shrink-0 pt-safe">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-3 space-y-2">
       
       <!-- Dòng 1: Logo, Tên Game & Thống Kê Ngân Lượng / Danh Vọng -->
@@ -244,7 +259,7 @@
           <input type="file" id="input-import-save" accept=".json,application/json" class="hidden" onchange="handleFileImport(event)">
 
           <!-- Bật/Tắt Âm Thanh -->
-          <button id="btn-sound-toggle" onclick="toggleAudio()" class="p-1.5 sm:p-2 bg-go-nhe hover:bg-dong-co text-dong-sang hover:text-muc-tau rounded-lg border border-dong-co transition shadow-sm touch-btn" title="Bật/Tắt Âm Thanh">
+          <button id="btn-sound-toggle" onclick="toggleAudio()" aria-label="Bật hoặc tắt âm thanh" class="p-1.5 sm:p-2 bg-go-nhe hover:bg-dong-co text-dong-sang hover:text-muc-tau rounded-lg border border-dong-co transition shadow-sm touch-btn" title="Bật/Tắt Âm Thanh">
             <svg id="icon-sound-on" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M11 5L6 9H2v6h4l5 4V5z"/>
             </svg>
@@ -255,7 +270,7 @@
           </button>
 
           <!-- Nút Reset -->
-          <button onclick="confirmResetGame()" class="p-1.5 sm:p-2 bg-red-950/60 hover:bg-red-800 text-red-200 rounded-lg border border-red-700/60 transition shadow-sm touch-btn" title="Chơi Lại">
+          <button onclick="confirmResetGame()" aria-label="Chơi lại từ đầu" class="p-1.5 sm:p-2 bg-red-950/60 hover:bg-red-800 text-red-200 rounded-lg border border-red-700/60 transition shadow-sm touch-btn" title="Chơi Lại">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
             </svg>
@@ -300,7 +315,7 @@
 
   <div id="ambient-overlay" class="pointer-events-none fixed inset-0 z-10 transition-colors duration-1000 bg-amber-500/0"></div>
 
-  <!-- ==================== KHU VỰC CHÍNH (VERTICAL STACK ON MOBILE) ==================== -->
+  <!-- ==================== KHU VỰC CHÍNH (CUỘN DỌC TỰ NHIÊN TRÊN MOBILE) ==================== -->
   <main class="max-w-7xl mx-auto w-full px-2.5 sm:px-6 py-3 sm:py-6 flex flex-col lg:grid lg:grid-cols-12 gap-4 sm:gap-5 relative z-10 flex-grow">
 
     <!-- PHẦN 1: VƯỜN THUỐC & BỘ CÔNG CỤ CANH TÁC (Ở TRÊN CÙNG TRÊN DI ĐỘNG) -->
@@ -382,7 +397,7 @@
         <!-- Khay Vuốt Ngang Chọn Hạt Giống (Horizontal Swipeable Bar) -->
         <div id="seed-selector-panel" class="mt-2.5 pt-2 border-t border-dong-co/30 flex items-center space-x-2">
           <span class="text-[11px] sm:text-xs text-dong-sang font-serif whitespace-nowrap shrink-0">Hạt:</span>
-          <div id="seed-chips-container" class="flex space-x-2 overflow-x-auto no-scrollbar py-1 w-full" style="-webkit-overflow-scrolling: touch;"></div>
+          <div id="seed-chips-container" class="flex space-x-2 overflow-x-auto no-scrollbar py-1 w-full" style="-webkit-overflow-scrolling: touch; touch-action: pan-x pan-y;"></div>
         </div>
       </div>
 
@@ -391,7 +406,7 @@
 
     </section>
 
-    <!-- PHẦN 2: DƯỢC ĐƯỜNG, ĐƠN KHÁCH, TỦ THUỐC & TIỆM TẠP HÓA (XẾP DƯỚI TRÊN DI ĐỘNG) -->
+    <!-- PHẦN 2: DƯỢC ĐƯỜNG, ĐƠN KHÁCH, TỦ THUỐC & TIỆM TẠP HÓA (XẾP DƯỚI TRÊN DI ĐỘNG, CUỘN TỰ NHIÊN) -->
     <section class="w-full lg:col-span-5 flex flex-col space-y-3 sm:space-y-4">
 
       <!-- TABS ĐIỀU HƯỚNG CẢM ỨNG CHUẨN NATIVE -->
@@ -411,7 +426,7 @@
       </div>
 
       <!-- TAB 1: ĐƠN HÀNG KHÁCH BỐC THUỐC -->
-      <div id="tab-content-orders" class="tab-pane flex flex-col space-y-2.5">
+      <div id="tab-content-orders" class="tab-pane space-y-2.5">
         <div class="bg-giay-do-dam p-2 sm:p-2.5 rounded-b-xl border border-t-0 border-dong-co text-xs text-muc-nhat flex items-center justify-between">
           <span class="font-serif italic truncate">Khách tìm đến bốc thuốc:</span>
           <span class="font-mono font-bold text-dong-co shrink-0 ml-2" id="lbl-active-orders-count">3 Đơn Đang Chờ</span>
@@ -420,7 +435,7 @@
       </div>
 
       <!-- TAB 2: DƯỢC ĐƯỜNG BÀO CHẾ CỔ PHƯƠNG -->
-      <div id="tab-content-crafting" class="tab-pane hidden flex-col space-y-3">
+      <div id="tab-content-crafting" class="tab-pane hidden space-y-3">
         <div class="bg-go-tram text-giay-do p-3 rounded-xl border border-dong-co shadow-sm">
           <h3 class="font-serif font-bold text-dong-sang text-xs sm:text-sm uppercase tracking-wider mb-1 flex items-center">
             <svg class="w-4 h-4 mr-1 text-dong-co shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -445,13 +460,13 @@
       </div>
 
       <!-- TAB 3: TỦ THUỐC -->
-      <div id="tab-content-inventory" class="tab-pane hidden flex-col space-y-3">
+      <div id="tab-content-inventory" class="tab-pane hidden space-y-3">
         <div class="bg-giay-do rounded-xl p-3 border border-dong-co shadow-sm">
           <div class="flex items-center justify-between border-b border-dong-co/40 pb-1.5 mb-2">
             <h4 class="font-serif font-bold text-xs sm:text-sm text-go-tram uppercase">Thảo Mộc Thô (15 Loài)</h4>
             <span class="text-[10px] text-muc-nhat font-mono">Bán trực tiếp</span>
           </div>
-          <div id="inventory-raw-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-72 overflow-y-auto p-0.5"></div>
+          <div id="inventory-raw-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2 lg:max-h-72 lg:overflow-y-auto p-0.5"></div>
         </div>
 
         <div class="bg-giay-do rounded-xl p-3 border border-dong-co shadow-sm">
@@ -464,13 +479,13 @@
       </div>
 
       <!-- TAB 4: KỲ TRÂN CÁC -->
-      <div id="tab-content-shop" class="tab-pane hidden flex-col space-y-3">
+      <div id="tab-content-shop" class="tab-pane hidden space-y-3">
         <div class="bg-giay-do rounded-xl p-3 border border-dong-co shadow-sm">
           <div class="flex items-center justify-between border-b border-dong-co/30 pb-1.5 mb-2">
             <h4 class="font-serif font-bold text-xs sm:text-sm text-go-tram uppercase">Hạt Giống Nam Dược</h4>
             <span class="text-[10px] text-muc-nhat italic">Nguồn Bản Thảo</span>
           </div>
-          <div id="shop-seeds-grid" class="space-y-1.5 max-h-64 overflow-y-auto pr-0.5"></div>
+          <div id="shop-seeds-grid" class="space-y-1.5 lg:max-h-64 lg:overflow-y-auto pr-0.5"></div>
         </div>
 
         <div class="bg-giay-do rounded-xl p-3 border border-dong-co shadow-sm">
@@ -490,7 +505,7 @@
 
   <!-- ==================== MODAL SỔ TAY "BẢN THẢO KINH" (TỐI ƯU TOÀN MÀN HÌNH DI ĐỘNG) ==================== -->
   <div id="modal-encyclopedia" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs hidden items-center justify-center p-2 sm:p-5">
-    <div class="bg-giay-do w-full max-w-5xl rounded-2xl border-2 sm:border-4 border-go-tram shadow-2xl overflow-hidden flex flex-col h-[96vh] sm:max-h-[92vh]">
+    <div class="bg-giay-do w-full max-w-5xl rounded-2xl border-2 sm:border-4 border-go-tram shadow-2xl overflow-hidden flex flex-col max-h-[94dvh] sm:max-h-[92vh]">
       
       <!-- Header Modal -->
       <div class="bg-go-tram text-dong-sang px-3 sm:px-6 py-2.5 sm:py-3.5 flex items-center justify-between border-b-2 border-dong-co shrink-0">
@@ -505,7 +520,7 @@
             <p class="text-[9px] sm:text-xs text-giay-do-dam font-serif italic">Tuệ Tĩnh & GS. Đỗ Tất Lợi</p>
           </div>
         </div>
-        <button onclick="closeEncyclopediaModal()" class="text-giay-do-dam hover:text-white p-2 rounded-lg touch-btn">
+        <button onclick="closeEncyclopediaModal()" aria-label="Đóng Bản Thảo Kinh" class="text-giay-do-dam hover:text-white p-2 rounded-lg touch-btn">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
@@ -516,17 +531,17 @@
       <div class="flex-grow flex flex-col md:grid md:grid-cols-12 overflow-hidden bg-giay-do min-h-0">
         
         <!-- Thanh chọn thảo dược: Horizontal scroll trên mobile (<md), Vertical list trên máy tính (md+) -->
-        <div class="md:col-span-4 border-b md:border-b-0 md:border-r border-dong-co/40 bg-giay-do-dam/50 p-2 sm:p-4 flex flex-col space-y-2 shrink-0">
+        <div class="md:col-span-4 border-b md:border-b-0 md:border-r border-dong-co/40 bg-giay-do-dam/50 p-2 sm:p-4 flex flex-col space-y-2 shrink-0 md:min-h-0">
           <div>
             <input type="text" id="encyclopedia-search" oninput="filterEncyclopedia()" placeholder="Tìm kiếm tên thuốc, tính vị..." class="w-full px-2.5 py-1.5 text-xs bg-giay-do border border-dong-co rounded-lg focus:outline-none focus:ring-1 focus:ring-ngoc-bich">
           </div>
 
           <!-- Thanh cuộn ngang thảo dược dành riêng cho điện thoại -->
-          <div class="flex md:hidden overflow-x-auto no-scrollbar space-x-1.5 py-1" id="encyclopedia-herb-chips-mobile" style="-webkit-overflow-scrolling: touch;"></div>
+          <div class="flex md:hidden overflow-x-auto no-scrollbar space-x-1.5 py-1" id="encyclopedia-herb-chips-mobile" style="-webkit-overflow-scrolling: touch; touch-action: pan-x pan-y;"></div>
 
           <!-- Danh sách dọc thảo dược dành cho máy tính / tablet -->
-          <div class="hidden md:flex flex-col flex-grow overflow-hidden space-y-1">
-            <div class="text-[11px] font-serif font-bold text-go-tram uppercase tracking-wider flex justify-between items-center py-1">
+          <div class="hidden md:flex flex-col flex-grow overflow-hidden space-y-1 min-h-0">
+            <div class="text-[11px] font-serif font-bold text-go-tram uppercase tracking-wider flex justify-between items-center py-1 shrink-0">
               <span>Danh Lục Nam Dược</span>
               <span class="text-muc-nhat font-mono" id="encyclopedia-count">15 Vị</span>
             </div>
@@ -535,7 +550,7 @@
         </div>
 
         <!-- Khung chi tiết thảo dược (Cuộn dọc độc lập) -->
-        <div class="md:col-span-8 p-3 sm:p-6 overflow-y-auto space-y-3.5 flex-grow" id="encyclopedia-detail-view" style="-webkit-overflow-scrolling: touch;"></div>
+        <div class="md:col-span-8 p-3 sm:p-6 overflow-y-auto space-y-3.5 flex-grow min-h-0" id="encyclopedia-detail-view" style="-webkit-overflow-scrolling: touch;"></div>
       </div>
 
       <!-- Footer Modal -->
@@ -567,7 +582,7 @@
   </div>
 
   <!-- FOOTER -->
-  <footer class="bg-go-tram text-dong-co/80 text-center py-2 text-[10px] sm:text-[11px] border-t border-dong-co/30 relative z-10 font-serif pb-safe">
+  <footer class="bg-go-tram text-dong-co/80 text-center py-2 text-[10px] sm:text-[11px] border-t border-dong-co/30 relative z-10 shrink-0 font-serif pb-safe">
     Dược Viên Cổ Truyền • Trò Chơi Quản Lý & Bào Chế Thuốc Nam Chuẩn Mobile Touch UX
   </footer>
 
@@ -2748,8 +2763,9 @@
 
         // Desktop item
         if (desktopNav) {
-          const item = document.createElement('div');
-          item.className = `p-2 rounded-xl border text-xs cursor-pointer transition flex items-center justify-between touch-btn ${
+          const item = document.createElement('button');
+          item.type = 'button';
+          item.className = `w-full text-left p-2 rounded-xl border text-xs cursor-pointer transition flex items-center justify-between touch-btn ${
             isSelected 
               ? 'bg-dong-co text-muc-tau font-bold border-yellow-200 shadow' 
               : 'bg-giay-do text-go-tram border-dong-co/40 hover:bg-giay-do-toi'
@@ -2776,6 +2792,7 @@
         // Mobile Chip (Cuộn ngang)
         if (mobileNav) {
           const chip = document.createElement('button');
+          chip.type = 'button';
           chip.className = `px-2.5 py-1 rounded-lg border text-xs font-serif shrink-0 transition flex items-center space-x-1 touch-btn ${
             isSelected
               ? 'bg-dong-co text-muc-tau font-bold border-yellow-300 shadow'
